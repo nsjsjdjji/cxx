@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iQOO手机展示 | 仿苹果玻璃效果</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: url('https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: -1;
+        }
+        
+        /* 玻璃效果容器 */
+        .glass-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        /* 头部 */
+        header {
+            text-align: center;
+            padding: 20px 0 40px;
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 5.5rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff003c, #ff8a00, #00d4ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 30px rgba(255, 0, 60, 0.5);
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+        
+        .subtitle {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        /* 内容区域 */
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 60px;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .phone-showcase {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .phone-image {
+            width: 320px;
+            height: 650px;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border-radius: 40px;
+            position: relative;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+            padding: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2028&q=80') center/cover;
+            border-radius: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding-bottom: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .phone-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent 40%);
+        }
+        
+        .phone-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #fff;
+            z-index: 1;
+            margin-bottom: 10px;
+        }
+        
+        .phone-tagline {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            z-index: 1;
+            text-align: center;
+            padding: 0 20px;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .feature {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 25px;
+            transition: transform 0.3s, background 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .feature:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2.2rem;
+            color: #ff003c;
+            margin-bottom: 15px;
+        }
+        
+        .feature-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        
+        .feature-desc {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+        
+        /* 导航区域 */
+        .navigation {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 20px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            min-width: 150px;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .nav-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .nav-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .nav-desc {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+        }
+        
+        /* 模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .modal-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: #fff;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: #ff003c;
+        }
+        
+        .author-info {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .author-desc {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-link {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            text-decoration: none;
+            color: #fff;
+            transition: background 0.3s;
+        }
+        
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .social-icon {
+            font-size: 1.5rem;
+            margin-right: 15px;
+            width: 30px;
+        }
+        
+        .social-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .social-name {
+            font-weight: 600;
+        }
+        
+        .social-id {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        /* 音乐控制 */
+        .music-control {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 100;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.3s;
+        }
+        
+        .music-control:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+        
+        .music-icon {
+            font-size: 1.5rem;
+            color: #fff;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 3.5rem;
+            }
+            
+            .glass-container {
+                width: 95%;
+                padding: 20px;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-item {
+                width: 90%;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .phone-image {
+                width: 280px;
+                height: 570px;
+            }
+        }
+        
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        .delay-1 { animation-delay: 0.2s; opacity: 0; }
+        .delay-2 { animation-delay: 0.4s; opacity: 0; }
+        .delay-3 { animation-delay: 0.6s; opacity: 0; }
+        .delay-4 { animation-delay: 0.8s; opacity: 0; }
+    </style>
+</head>
+<body>
+    <!-- 背景音乐 -->
+    <audio id="bg-music" loop>
+        <source src="https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- 主容器 -->
+    <div class="glass-container animate-fade">
+        <header>
+            <h1 class="logo">iQOO</h1>
+            <p class="subtitle">生而强悍，突破极限。iQOO系列手机搭载最新骁龙处理器，超快闪充技术，专业电竞体验，为年轻用户打造极致的性能旗舰。</p>
+        </header>
+        
+        <div class="content">
+            <div class="phone-showcase animate-fade delay-1">
+                <div class="phone-image">
+                    <div class="phone-screen">
+                        <div class="phone-logo">iQOO 11</div>
+                        <p class="phone-tagline">骁龙 8 Gen 2 | 200W闪充 | 三星E6 2K屏</p>
+                    </div>
+                </div>
+                <div class="features">
+                    <div class="feature">
+                        <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                        <h3 class="feature-title">200W超快闪充</h3>
+                        <p class="feature-desc">10分钟充满4700mAh电池，告别电量焦虑</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon"><i class="fas fa-gamepad"></i></div>
+                        <h3 class="feature-title">电竞级性能</h3>
+                        <p class="feature-desc">骁龙8 Gen2处理器，自研芯片V2，畅玩大型游戏</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon"><i class="fas fa-camera"></i></div>
+                        <h3 class="feature-title">专业影像系统</h3>
+                        <p class="feature-desc">索尼IMX866传感器，OIS光学防抖，夜景更清晰</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h3 class="feature-title">144Hz高刷屏</h3>
+                        <p class="feature-desc">三星E6 2K屏，LTPO 4.0，流畅更省电</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="features animate-fade delay-2">
+                <div class="feature">
+                    <div class="feature-icon"><i class="fas fa-microchip"></i></div>
+                    <h3 class="feature-title">强悍内核</h3>
+                    <p class="feature-desc">搭载最新骁龙8系列处理器，LPDDR5X内存，UFS 4.0闪存，性能全面提升。</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon"><i class="fas fa-snowflake"></i></div>
+                    <h3 class="feature-title">散热系统</h3>
+                    <p class="feature-desc">4013mm²超大VC均热板，智能温控算法，长时间游戏不烫手。</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon"><i class="fas fa-paint-brush"></i></div>
+                    <h3 class="feature-title">设计美学</h3>
+                    <p class="feature-desc">未来感设计语言，AG磨砂玻璃，传奇版/赛道版/曼岛特别版多种配色。</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon"><i class="fas fa-wifi"></i></div>
+                    <h3 class="feature-title">全场景连接</h3>
+                    <p class="feature-desc">Wi-Fi 7，蓝牙5.3，多功能NFC，双5G待机，时刻在线。</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3 class="feature-title">OriginOS Ocean</h3>
+                    <p class="feature-desc">基于Android 13，全新原子组件，流畅动画，隐私保护升级。</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon"><i class="fas fa-headset"></i></div>
+                    <h3 class="feature-title">游戏体验</h3>
+                    <p class="feature-desc">屏下双控压感，双X轴线性马达，立体双扬，专业电竞模式。</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="navigation animate-fade delay-3">
+            <a href="#" class="nav-item" id="nav-night">
+                <div class="nav-icon"><i class="fas fa-moon"></i></div>
+                <h3 class="nav-title">我们守夜</h3>
+                <p class="nav-desc">深夜模式/暗色主题</p>
+            </a>
+            
+            <a href="#" class="nav-item" id="nav-author">
+                <div class="nav-icon"><i class="fas fa-user"></i></div>
+                <h3 class="nav-title">关于作者</h3>
+                <p class="nav-desc">联系信息与社交账号</p>
+            </a>
+            
+            <a href="#" class="nav-item" id="nav-kuaishou">
+                <div class="nav-icon"><i class="fas fa-video"></i></div>
+                <h3 class="nav-title">快手</h3>
+                <p class="nav-desc">X1---------1X</p>
+            </a>
+        </div>
+    </div>
+    
+    <!-- 关于作者模态框 -->
+    <div class="modal" id="author-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">关于作者</h2>
+                <button class="close-modal" id="close-modal">&times;</button>
+            </div>
+            <div class="author-info">
+                <p class="author-desc">本站作者是一名科技爱好者和前端开发者，热爱动漫和数码产品。此页面展示iQOO手机特色功能，采用仿苹果玻璃效果设计。</p>
+                <div class="social-links">
+                    <a href="tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=3393243175" class="social-link" id="qq-link">
+                        <div class="social-icon"><i class="fab fa-qq"></i></div>
+                        <div class="social-text">
+                            <span class="social-name">QQ</span>
+                            <span class="social-id">3393243175</span>
+                        </div>
+                    </a>
+                    
+                    <a href="https://t.me/ShaoZhu875" class="social-link" id="telegram-link">
+                        <div class="social-icon"><i class="fab fa-telegram"></i></div>
+                        <div class="social-text">
+                            <span class="social-name">Telegram</span>
+                            <span class="social-id">@ShaoZhu875</span>
+                        </div>
+                    </a>
+                    
+                    <a href="https://www.kuaishou.com/profile/X1---------1X" class="social-link" id="kuaishou-link">
+                        <div class="social-icon"><i class="fas fa-video"></i></div>
+                        <div class="social-text">
+                            <span class="social-name">快手</span>
+                            <span class="social-id">X1---------1X</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 音乐控制按钮 -->
+    <div class="music-control" id="music-control">
+        <i class="fas fa-music music-icon"></i>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 音乐控制
+            const bgMusic = document.getElementById('bg-music');
+            const musicControl = document.getElementById('music-control');
+            let musicPlaying = false;
+            
+            // 尝试自动播放音乐（用户交互后）
+            function playMusic() {
+                bgMusic.volume = 0.3;
+                bgMusic.play().then(() => {
+                    musicPlaying = true;
+                    musicControl.innerHTML = '<i class="fas fa-volume-up music-icon"></i>';
+                }).catch(e => {
+                    console.log("自动播放被阻止，需要用户交互");
+                    musicControl.innerHTML = '<i class="fas fa-play music-icon"></i>';
+                });
+            }
+            
+            // 延迟播放音乐
+            setTimeout(playMusic, 1000);
+            
+            // 音乐控制点击事件
+            musicControl.addEventListener('click', function() {
+                if (musicPlaying) {
+                    bgMusic.pause();
+                    musicControl.innerHTML = '<i class="fas fa-play music-icon"></i>';
+                } else {
+                    bgMusic.play();
+                    musicControl.innerHTML = '<i class="fas fa-volume-up music-icon"></i>';
+                }
+                musicPlaying = !musicPlaying;
+            });
+            
+            // 模态框控制
+            const authorModal = document.getElementById('author-modal');
+            const navAuthor = document.getElementById('nav-author');
+            const closeModal = document.getElementById('close-modal');
+            
+            navAuthor.addEventListener('click', function(e) {
+                e.preventDefault();
+                authorModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+            
+            closeModal.addEventListener('click', function() {
+                authorModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+            
+            // 点击模态框外部关闭
+            authorModal.addEventListener('click', function(e) {
+                if (e.target === authorModal) {
+                    authorModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+            
+            // 我们守夜按钮
+            const navNight = document.getElementById('nav-night');
+            navNight.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('我们守夜模式已开启！页面将切换为暗色主题。');
+                document.body.style.filter = 'invert(1) hue-rotate(180deg)';
+                setTimeout(() => {
+                    document.body.style.filter = 'none';
+                }, 3000);
+            });
+            
+            // 外部链接处理
+            const externalLinks = [
+                {id: 'qq-link', url: 'tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=3393243175'},
+                {id: 'telegram-link', url: 'https://t.me/ShaoZhu875'},
+                {id: 'kuaishou-link', url: 'https://www.kuaishou.com/profile/X1---------1X'},
+                {id: 'nav-kuaishou', url: 'https://www.kuaishou.com/profile/X1---------1X'}
+            ];
+            
+            externalLinks.forEach(link => {
+                const element = document.getElementById(link.id);
+                if (element) {
+                    element.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const confirmMessage = link.id.includes('qq') 
+                            ? '是否打开QQ添加好友？' 
+                            : link.id.includes('telegram') 
+                            ? '是否打开Telegram？' 
+                            : '是否打开快手？';
+                        
+                        if (confirm(confirmMessage)) {
+                            window.location.href = link.url;
+                        }
+                    });
+                }
+            });
+            
+            // 添加滚动动画
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-fade');
+                    }
+                });
+            }, observerOptions);
+            
+            // 观察所有有动画延迟类的元素
+            document.querySelectorAll('.delay-1, .delay-2, .delay-3, .delay-4').forEach(el => {
+                observer.observe(el);
+            });
+            
+            // 页面加载时显示动画
+            setTimeout(() => {
+                document.querySelectorAll('.animate-fade').forEach(el => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                });
+            }, 100);
+        });
+    </script>
+</body>
+  </html>
