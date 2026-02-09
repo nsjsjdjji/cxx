@@ -3,1088 +3,581 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>七神研究所 穗星数据库 - 原神</title>
+    <title>嘻嘻嘻嘻嘻嘻嘻🥰🥰🥰</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Microsoft YaHei", "Segoe UI", sans-serif;
         }
+
         body {
-            background: #f7f8fa;
-            color: #333;
-            padding: 15px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: #0a0a14;
+            position: relative;
+        }
+
+        /* 背景图片 */
+        .background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('m1.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: -2;
+            filter: brightness(0.7) contrast(1.1);
+        }
+
+        /* 雪花容器 */
+        .snow-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: #ffffff;
+            font-size: 1em;
+            opacity: 0.8;
+            animation: fall linear infinite;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10px) rotate(0deg);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0.2;
+            }
+        }
+
+        /* 主容器 */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 毛玻璃效果 */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            margin-bottom: 40px;
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 多彩字体效果 */
+        .colorful-text {
+            background: linear-gradient(90deg, 
+                #FF6B8B, #FF8E53, #FFD166, 
+                #06D6A0, #118AB2, #7209B7);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 300% 300%;
+            animation: gradient-shift 8s ease infinite;
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 标题样式 */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
             line-height: 1.6;
         }
-        /* 头部样式 */
-        .header {
-            background: #fff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-            margin-bottom: 18px;
+
+        /* 作者介绍部分 */
+        .intro-section {
+            margin-bottom: 50px;
         }
-        .header h1 {
-            font-size: 22px;
+
+        .intro-title {
+            font-size: 2.2rem;
             font-weight: 700;
-            margin-bottom: 8px;
-        }
-        .version {
-            color: #666;
-            margin: 10px 0;
-            font-size: 13px;
-        }
-        .countdown {
-            color: #999;
-            font-size: 14px;
-            margin-bottom: 15px;
-        }
-        .header a {
-            color: #1677ff;
-            text-decoration: none;
-        }
-        /* 导航栏样式 */
-        .nav-bar {
-            background: #fff;
-            padding: 12px 15px;
-            border-radius: 12px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-            margin-bottom: 18px;
+            margin-bottom: 25px;
             display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
+            align-items: center;
         }
-        .nav-btn {
-            padding: 8px 14px;
-            border-radius: 8px;
-            border: none;
-            background: #f5f7fa;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            -webkit-tap-highlight-color: transparent;
+
+        .intro-title i {
+            margin-right: 15px;
+            font-size: 2rem;
         }
-        .nav-btn:hover, .nav-btn:active {
-            background: #e8f3ff;
-            color: #1677ff;
+
+        .intro-content {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            text-align: justify;
         }
-        .nav-btn.active {
-            background: #1677ff;
-            color: #fff;
-        }
-        /* 二级导航栏样式 */
-        .sub-nav-bar {
-            background: #f8f9fa;
-            padding: 10px 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-        .sub-nav-btn {
-            padding: 6px 12px;
-            border-radius: 6px;
-            border: none;
-            background: #e9ecef;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.25s ease;
-        }
-        .sub-nav-btn:hover, .sub-nav-btn:active {
-            background: #dbeafe;
-            color: #1677ff;
-        }
-        .sub-nav-btn.active {
-            background: #1677ff;
-            color: #fff;
-        }
-        /* 内容模块样式 */
-        .content-section {
-            background: #fff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-            margin-bottom: 18px;
-            display: none;
-        }
-        .section-title {
-            font-size: 18px;
+
+        .highlight {
             font-weight: 600;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
-            margin-bottom: 15px;
+            color: #FFD166;
+            text-shadow: 0 0 10px rgba(255, 209, 102, 0.3);
         }
-        /* 指令卡片样式 */
-        .cmd-card {
-            background: #fafbfc;
-            padding: 12px;
-            border-radius: 10px;
-            margin-bottom: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .cmd-code {
-            font-family: "Consolas", monospace;
-            font-size: 14px;
-            color: #1677ff;
-        }
-        .cmd-desc {
-            font-size: 12px;
-            color: #666;
-        }
-        .card-copy-btn {
-            padding: 4px 10px;
-            background: #66b1ff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            font-size: 12px;
-            cursor: pointer;
-            width: fit-content;
-            -webkit-tap-highlight-color: transparent;
-        }
-        /* 图片样式 */
-        .cmd-image {
-            width: 100%;
-            max-width: 300px;
-            height: auto;
-            border-radius: 6px;
-            margin: 8px 0;
-            border: 1px solid #eee;
+
+        /* 关于作者按钮 */
+        .about-button {
             display: block;
-        }
-        /* 复制提示 */
-        .copy-tip {
-            position: fixed;
-            top: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #52c41a;
-            color: #fff;
-            padding: 10px 25px;
-            border-radius: 6px;
-            font-size: 14px;
-            display: none;
-            z-index: 999;
-            white-space: nowrap;
-        }
-        /* 角色/武器模块样式 */
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 12px;
-        }
-        .info-card {
-            background: #fafbfc;
-            padding: 12px;
-            border-radius: 10px;
+            width: 200px;
+            margin: 30px auto 50px;
+            padding: 18px 30px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
             text-align: center;
         }
-        .card-name {
-            font-weight: 500;
-            margin-bottom: 4px;
-            font-size: 14px;
+
+        .about-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
         }
-        .card-desc {
-            font-size: 12px;
-            color: #666;
-        }
-        /* 强敌模块样式 */
-        .boss-category {
-            font-size: 16px;
-            font-weight: 600;
-            margin: 25px 0 10px;
-            color: #1677ff;
-        }
-        .boss-note {
-            font-size: 12px;
-            color: #ff4d4f;
-            margin: 5px 0 10px;
-        }
-        .boss-title {
-            font-size: 15px;
-            font-weight: 500;
-            margin: 15px 0 8px;
-            color: #333;
-        }
-        .boss-english {
-            font-size: 13px;
-            color: #888;
-            margin-bottom: 8px;
-        }
-        .thanks-note {
-            font-size: 14px;
-            color: #333;
-            background: #f0f9ff;
-            padding: 15px;
-            border-radius: 10px;
+
+        /* 社交图标区域 */
+        .social-section {
+            display: none;
             margin-top: 30px;
             text-align: center;
+            animation: fadeIn 0.8s ease;
         }
-        .site-footer {
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .social-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .social-item:hover {
+            transform: translateY(-10px) scale(1.05);
+        }
+
+        .social-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .social-icon img {
+            width: 60%;
+            height: 60%;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+
+        .social-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .social-id {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        /* 原神区域 */
+        .genshin-section {
             text-align: center;
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .genshin-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .genshin-icon {
+            width: 120px;
+            height: 120px;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .genshin-icon:hover {
+            transform: translateY(-10px) scale(1.05);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+
+        .genshin-icon img {
+            width: 70%;
+            height: 70%;
+            object-fit: contain;
+            border-radius: 15px;
+        }
+
+        .genshin-text {
             margin-top: 20px;
-            color: #999;
-            font-size: 12px;
+            font-size: 1.1rem;
+            opacity: 0.9;
         }
-       /* 武器模块专用样式 */
-.weapon-type-section {
-    margin-top: 15px;
-}
 
-.weapon-star-section {
-    margin-top: 15px;
-}
-
-/* 星级导航按钮样式 */
-#weaponTypeNav .sub-nav-btn,
-#swordStarNav .sub-nav-btn,
-#claymoreStarNav .sub-nav-btn {
-    min-width: 80px;
-    text-align: center;
-}
-
-/* 星级按钮的特殊样式 */
-.sub-nav-bar .sub-nav-btn:nth-child(1) { /* ⭐️ */
-    background: #e8f3ff;
-    color: #1677ff;
-}
-.sub-nav-bar .sub-nav-btn:nth-child(2) { /* ⭐️⭐️ */
-    background: #f0f9ff;
-    color: #13c2c2;
-}
-.sub-nav-bar .sub-nav-btn:nth-child(3) { /* ⭐️⭐️⭐️ */
-    background: #f6ffed;
-    color: #52c41a;
-}
-.sub-nav-bar .sub-nav-btn:nth-child(4) { /* ⭐️⭐️⭐️⭐️ */
-    background: #fff7e6;
-    color: #fa8c16;
-}
-.sub-nav-bar .sub-nav-btn:nth-child(5) { /* ⭐️⭐️⭐️⭐️⭐️ */
-    background: #fff0f6;
-    color: #eb2f96;
-}
-
-/* 激活状态的星级按钮 */
-.sub-nav-bar .sub-nav-btn.active:nth-child(1) {
-    background: #1677ff;
-    color: #fff;
-}
-.sub-nav-bar .sub-nav-btn.active:nth-child(2) {
-    background: #13c2c2;
-    color: #fff;
-}
-.sub-nav-bar .sub-nav-btn.active:nth-child(3) {
-    background: #52c41a;
-    color: #fff;
-}
-.sub-nav-bar .sub-nav-btn.active:nth-child(4) {
-    background: #fa8c16;
-    color: #fff;
-}
-.sub-nav-bar .sub-nav-btn.active:nth-child(5) {
-    background: #eb2f96;
-    color: #fff;
-}
-// 手机端一键复制（核心函数）
-function mobileCopyCommand(btnEl) {
-    // 获取要复制的文本
-    const codeElement = btnEl.parentElement.querySelector('.cmd-code');
-    if (!codeElement) return;
-    
-    let text = codeElement.innerText.trim();
-    
-    // 立即给用户反馈
-    btnEl.style.background = '#52c41a';
-    btnEl.innerHTML = '✓ 已复制';
-    
-    // 1秒后恢复按钮状态
-    setTimeout(() => {
-        btnEl.style.background = '';
-        btnEl.innerHTML = '一键复制';
-    }, 1000);
-    
-    // 创建临时textarea
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
-    textarea.style.position = 'fixed';
-    textarea.style.left = '0';
-    textarea.style.top = '0';
-    textarea.style.width = '1px';
-    textarea.style.height = '1px';
-    textarea.style.opacity = '0';
-    
-    document.body.appendChild(textarea);
-    
-    try {
-        // 选择文本
-        textarea.select();
-        textarea.setSelectionRange(0, 99999);
-        
-        // 执行复制
-        const success = document.execCommand('copy');
-        
-        if (success) {
-            // 显示成功提示
-            showMobileSuccessTip();
+        /* 页脚 */
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-top: 40px;
         }
-    } catch (err) {
-        console.log('复制失败:', err);
-    } finally {
-        // 清理
-        setTimeout(() => {
-            if (textarea.parentNode) {
-                textarea.parentNode.removeChild(textarea);
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
             }
-        }, 1000);
-    }
-}
+            
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .glass-card {
+                padding: 25px;
+            }
+            
+            .intro-title {
+                font-size: 1.8rem;
+            }
+            
+            .intro-content {
+                font-size: 1.1rem;
+            }
+            
+            .social-icons {
+                gap: 25px;
+            }
+            
+            .social-icon {
+                width: 80px;
+                height: 80px;
+            }
+        }
 
-// 显示成功提示
-function showMobileSuccessTip() {
-    const tip = document.createElement('div');
-    tip.style.cssText = `
-        position: fixed;
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: #52c41a;
-        color: white;
-        padding: 10px 20px;
-        border-radius: 20px;
-        z-index: 100000;
-        font-size: 14px;
-        animation: slideDown 0.3s ease;
-    `;
-    tip.textContent = '✅ 复制成功！';
-    document.body.appendChild(tip);
-    
-    setTimeout(() => {
-        if (tip.parentNode) tip.parentNode.removeChild(tip);
-    }, 1500);
-}
-/* ============ 传统复制方法专用样式 ============ */
-/* 复制成功提示 */
-.exec-copy-success {
-    position: fixed;
-    top: 20%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #52c41a;
-    color: white;
-    padding: 12px 24px;
-    border-radius: 25px;
-    font-size: 15px;
-    font-weight: bold;
-    z-index: 100000;
-    text-align: center;
-    animation: execFadeInOut 2s ease forwards;
-    box-shadow: 0 4px 12px rgba(82, 196, 26, 0.3);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-}
-
-/* 手动复制提示框 */
-.exec-manual-copy-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.95);
-    z-index: 99999;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-.exec-manual-copy-content {
-    background: white;
-    border-radius: 16px;
-    padding: 25px;
-    max-width: 90%;
-    width: 100%;
-    max-height: 80vh;
-    overflow-y: auto;
-    text-align: center;
-    animation: execScaleIn 0.3s ease;
-}
-
-.exec-copy-text-display {
-    background: linear-gradient(135deg, #f0f9ff 0%, #e6f7ff 100%);
-    padding: 20px;
-    border-radius: 10px;
-    margin: 20px 0;
-    font-family: 'Consolas', 'Monaco', monospace;
-    font-size: 16px;
-    color: #1677ff;
-    word-break: break-all;
-    text-align: left;
-    line-height: 1.6;
-    border: 2px solid #bae7ff;
-    box-shadow: inset 0 2px 8px rgba(22, 119, 255, 0.1);
-    user-select: text;
-    -webkit-user-select: text;
-    max-height: 200px;
-    overflow-y: auto;
-}
-
-/* 动画 */
-@keyframes execFadeInOut {
-    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
-    15% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
-    30% { transform: translate(-50%, -50%) scale(1); }
-    70% { opacity: 1; }
-    100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
-}
-
-@keyframes execScaleIn {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
-}
-
-/* 移动端优化（与之前一致，但更强调传统方法） */
-@media (max-width: 768px) {
-    .card-copy-btn {
-        min-height: 48px !important;
-        min-width: 80px !important;
-        padding: 14px 20px !important;
-        font-size: 16px !important;
-        position: relative !important;
-        z-index: 10 !important;
-        background: linear-gradient(135deg, #4096ff 0%, #0958d9 100%) !important;
-        color: white !important;
-        font-weight: 600 !important;
-        border: none !important;
-        box-shadow: 0 3px 8px rgba(22, 119, 255, 0.25) !important;
-    }
-    
-    .card-copy-btn:active {
-        transform: scale(0.95) !important;
-        background: linear-gradient(135deg, #0958d9 0%, #003eb3 100%) !important;
-        transition: all 0.1s !important;
-    }
-    
-    /* 扩大触摸区域 */
-    .card-copy-btn::before {
-        content: '' !important;
-        position: absolute !important;
-        top: -20px !important;
-        left: -20px !important;
-        right: -20px !important;
-        bottom: -20px !important;
-        z-index: -1 !important;
-    }
-}
-/* ============ 传统复制方法专用样式 ============ */
-.exec-copy-success {
-    position: fixed;
-    top: 20%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #52c41a;
-    color: white;
-    padding: 12px 24px;
-    border-radius: 25px;
-    font-size: 15px;
-    font-weight: bold;
-    z-index: 100000;
-    text-align: center;
-    animation: execFadeInOut 2s ease forwards;
-    box-shadow: 0 4px 12px rgba(82, 196, 26, 0.3);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-}
-
-@keyframes execFadeInOut {
-    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
-    15% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
-    30% { transform: translate(-50%, -50%) scale(1); }
-    70% { opacity: 1; }
-    100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
-}
-
-/* 移动端复制按钮强化 */
-@media (max-width: 768px) {
-    .card-copy-btn {
-        min-height: 48px !important;
-        min-width: 80px !important;
-        padding: 14px 20px !important;
-        font-size: 16px !important;
-        position: relative !important;
-        z-index: 10 !important;
-        background: linear-gradient(135deg, #4096ff 0%, #0958d9 100%) !important;
-        color: white !important;
-        font-weight: 600 !important;
-        border: none !important;
-        box-shadow: 0 3px 8px rgba(22, 119, 255, 0.25) !important;
-    }
-    
-    .card-copy-btn:active {
-        transform: scale(0.95) !important;
-        background: linear-gradient(135deg, #0958d9 0%, #003eb3 100%) !important;
-        transition: all 0.1s !important;
-    }
-    
-    .card-copy-btn::before {
-        content: '' !important;
-        position: absolute !important;
-        top: -20px !important;
-        left: -20px !important;
-        right: -20px !important;
-        bottom: -20px !important;
-        z-index: -1 !important;
-    }
-}
-/* 搜索相关样式 */
-.search-container {
-    position: relative;
-    display: inline-block;
-    vertical-align: middle;
-}
-
-#searchInput {
-    padding: 8px 35px 8px 12px;
-    border: 1px solid #d9d9d9;
-    border-radius: 6px;
-    font-size: 14px;
-    width: 220px;
-    outline: none;
-    transition: all 0.3s;
-    background: #fff;
-}
-
-#searchInput:focus {
-    border-color: #1677ff;
-    box-shadow: 0 0 0 2px rgba(22, 119, 255, 0.1);
-}
-
-#searchClear {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    color: #999;
-    font-size: 18px;
-    line-height: 1;
-    width: 20px;
-    height: 20px;
-    text-align: center;
-    border-radius: 50%;
-    transition: background 0.3s;
-}
-
-#searchClear:hover {
-    background: #f5f5f5;
-    color: #666;
-}
-
-/* 搜索结果高亮样式 */
-.highlight {
-    background-color: #fffb8f;
-    color: #000;
-    padding: 0 2px;
-    border-radius: 2px;
-}
-
-/* 搜索结果容器 */
-.search-results-container {
-    position: fixed;
-    top: 70px;
-    right: 20px;
-    width: 350px;
-    max-height: 500px;
-    overflow-y: auto;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-    z-index: 9999;
-    display: none;
-    border: 1px solid #e8e8e8;
-}
-
-.search-result-item {
-    padding: 12px 16px;
-    border-bottom: 1px solid #f0f0f0;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.search-result-item:hover {
-    background: #f5f7fa;
-}
-
-.search-result-item:last-child {
-    border-bottom: none;
-}
-
-.search-result-code {
-    font-family: 'Consolas', monospace;
-    font-size: 13px;
-    color: #1677ff;
-    margin-bottom: 4px;
-    word-break: break-all;
-}
-
-.search-result-desc {
-    font-size: 12px;
-    color: #666;
-}
-
-.search-result-module {
-    display: inline-block;
-    padding: 2px 6px;
-    background: #e8f3ff;
-    color: #1677ff;
-    border-radius: 3px;
-    font-size: 11px;
-    margin-right: 8px;
-}
-
-.search-result-count {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: #1677ff;
-    color: white;
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-size: 12px;
-    z-index: 10000;
-    display: none;
-    animation: slideDown 0.3s ease;
-}
-
-/* 搜索高亮样式 */
-.search-highlight {
-    animation: pulseHighlight 2s ease-in-out;
-    border-left: 4px solid #1677ff !important;
-    background: #f0f9ff !important;
-}
-
-@keyframes pulseHighlight {
-    0%, 100% { background: #f0f9ff; }
-    50% { background: #e6f7ff; }
-}
-
-@keyframes slideDown {
-    from {
-        transform: translate(-50%, -20px);
-        opacity: 0;
-    }
-    to {
-        transform: translate(-50%, 0);
-        opacity: 1;
-    }
-}
-
-/* 移动端适配 */
-@media (max-width: 768px) {
-    #searchInput {
-        width: 150px;
-        font-size: 13px;
-        padding: 6px 30px 6px 10px;
-    }
-    
-    .search-results-container {
-        width: 90%;
-        right: 5%;
-        left: 5%;
-        top: 60px;
-        max-height: 400px;
-    }
-    
-    .search-result-code {
-        font-size: 12px;
-    }
-}
+        /* 音乐播放器隐藏 */
+        #background-music {
+            display: none;
+        }
     </style>
 </head>
-<!-- 搜索结果容器 -->
-<div id="searchResults" class="search-results-container"></div>
-<div id="searchCount" class="search-result-count"></div>
 <body>
-<!-- 复制专用容器 -->
-<div id="execCopyContainer" style="position: fixed; left: -9999px; top: 0; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none;">
-    <textarea id="execCopyTextarea"></textarea>
-    <div id="execCopyDiv" contenteditable="true"></div>
-</div>
-<!-- 在body开始处添加这个隐藏的textarea -->
-<textarea id="hiddenCopyTextarea" style="position: fixed; left: -9999px; opacity: 0; width: 1px; height: 1px;"></textarea>
-    <div class="copy-tip" id="copyTip">复制成功！</div>
-
-    <!-- 头部信息 -->
-    <div class="header">
-        <h1>穗星数据库-七神研究所 v1.0.31</h1>
-        <div class="version">当前版本：6.3 </div>
-        <div class="countdown"></div>
-        <div>
-            <span>PC端可直接一键复制/手机端需长按文本复制 </span>
-            <span style="margin: 0 10px;">|</span>
-            <a href="http://110.42.109.118:8080/" target="_blank">原神6.3指令请前往</a>
-            <span style="margin-left: 20px;"></span>
-        <div class="search-container" style="display: inline-block; position: relative;">
-            <input type="text" id="searchInput" placeholder="搜索指令或名称..." 
-                   style="padding: 8px 12px; border: 1px solid #d9d9d9; border-radius: 6px; 
-                          font-size: 14px; width: 200px; outline: none;"
-                   onkeyup="searchContent()">
-            <div id="searchClear" style="position: absolute; right: 8px; top: 50%; 
-                  transform: translateY(-50%); cursor: pointer; color: #999; display: none;"
-                  onclick="clearSearch()">×</div>
-        </div>
-        </div>
-    </div>
-
-    <!-- 导航栏：将"幽境危战"改为"所有场景/秘境ID" -->
-    <div class="nav-bar">
-        <button class="nav-btn active" onclick="showHomeSection()">首页</button>
-        <button class="nav-btn" onclick="toggleContent('commonCommandsSection')">常用指令</button>
-        <button class="nav-btn" onclick="toggleContent('charSection')">角色</button>
-        <button class="nav-btn" onclick="toggleContent('weaponSection')">武器</button>
-        <button class="nav-btn" onclick="toggleContent('artifactSection')">圣遗物</button>
-        <button class="nav-btn" onclick="toggleContent('bossSection')">值得铭记的强敌</button>
-        <button class="nav-btn" onclick="toggleContent('sceneSection')">所有场景/秘境ID</button>
-        <button class="nav-btn" onclick="toggleContent('spiralSection')">深境螺旋</button>
-        <button class="nav-btn" onclick="toggleContent('dreamSection')">幻想真境剧诗</button>
-        <button class="nav-btn" onclick="toggleContent('questNewSection')">任务剧情（新）</button>
-        <button class="nav-btn" onclick="toggleContent('questSection')">任务剧情</button>
-        <button class="nav-btn" onclick="toggleContent('itemSection')">材料 食物 名片 头像</button>
-        <button class="nav-btn" onclick="toggleContent('achievementSection')">成就</button>
-        <button class="nav-btn" onclick="toggleContent('geographySection')">地理志</button>
-        <button class="nav-btn" onclick="toggleContent('tutorialSection')">教程</button>
-        <button class="nav-btn" onclick="toggleContent('eventSection')">活动</button>
-        <button class="nav-btn" onclick="toggleContent('loadTipSection')">加载提示</button>
-    </div>
-     <!-- 首页模块 - 默认展开 -->
-<section id="homeSection" class="content-section" style="display: block;">
-    <h2 class="section-title">欢迎使用穗星数据库/v1.0.31更新公告：1.新增部分全圣遗物ID展示，新增圣遗物配置教程</h2>
+    <!-- 背景图片 -->
+    <div class="background-image"></div>
     
-    <!-- 原神：七神研究所项目介绍 -->
-    <div class="cmd-card" style="background: #f0f9ff;">
-        <div class="boss-title" style="color: #1677ff;">《原神：七神研究所》项目介绍</div>
-        <div class="cmd-desc">
-            《原神：七神研究所》是指由@穗星✧创作的一项专门做kun数据整理工作项目。该项目主要负责整理Scene和Enemies of Note详细指令ID并列出说明其同类型不同指令的子ID工作。
-        </div>
-        <div class="cmd-desc">
-            别名《Moon Research Institution》译为月亮研究所，简称MRI。
-        </div>
-    </div>
+    <!-- 雪花效果容器 -->
+    <div class="snow-container" id="snow-container"></div>
     
-    <div class="cmd-card" style="background: #f6ffed;">
-        <div class="boss-title" style="color: #52c41a;">项目宗旨</div>
-        <div class="cmd-desc">
-            《原神：七神研究所》完全免费仅供无内购公益服使用！此项目惠及无内购公益服，不收取任何费用，此项目创作初心是为了方便玩家查找场景与强敌指令，玩家可以广泛使用并创新。
-        </div>
-    </div>
+    <!-- 背景音乐（自动播放，无法控制） -->
+    <audio id="background-music" autoplay loop>
+        <source src="cxx.mp3" type="audio/mpeg">
+        您的浏览器不支持音频播放。
+    </audio>
     
-    <div class="cmd-card" style="background: #fff7e6;">
-        <div class="boss-title" style="color: #fa8c16;">致谢</div>
-        <div class="cmd-desc">
-            《原神：七神研究所》该项目成立得益于@季雨 @蓝焰 @Yxzaoe @이서 @"千劫" @梦里 Sleeping @wuwu @- @Columbina @⁧王⁧ @𝑴𝒆𝑪𝒉𝒆𝒏 @屑Chen @⁧ 等大佬提供的支持与帮助。
-        </div>
+    <!-- 主内容 -->
+    <div class="container">
+        <!-- 标题 -->
+        <header class="header glass-card">
+            <h1 class="colorful-text">个人简介</h1>
+            <p>一个在游戏世界与文字天地间游走的探索者，用独特的视角观察生活，用细腻的笔触记录感悟</p>
+        </header>
+        
+        <!-- 作者介绍 -->
+        <section class="intro-section glass-card">
+            <h2 class="intro-title colorful-text">
+                <i class="fas fa-user-circle"></i>关于我
+            </h2>
+            <div class="intro-content">
+                <p>是<span class="highlight">iQOO手机的忠实爱好者</span>，偏爱用高性能设备解锁各类游戏乐趣，<span class="highlight">原神</span>是日常消遣的主打，也常穿梭于不同游戏世界探索新鲜感。</p>
+                <br>
+                <p>性格偏内向，慢热少言，却藏着柔软真诚的底色，待人温和友善，相处起来格外舒服。现实里自带几分<span class="highlight">"抽象"气质</span>，脑回路清奇，偶尔的脑洞和举动总能带来别样趣味。</p>
+                <br>
+                <p>习惯在自己的小世界里观察生活，也乐于把细碎的心思和奇趣的感悟揉进文字里，让笔下的内容满是独属于自己的<span class="highlight">鲜活质感</span>。</p>
+            </div>
+        </section>
+        
+        <!-- 关于作者按钮 -->
+        <button class="about-button glass-card" id="about-button">
+            <i class="fas fa-chevron-down"></i> 关于作者/联系方式
+        </button>
+        
+        <!-- 社交图标区域（默认隐藏） -->
+        <section class="social-section glass-card" id="social-section">
+            <h2 class="intro-title colorful-text">
+                <i class="fas fa-share-alt"></i>联系与社交
+            </h2>
+            <p style="text-align: center; margin-bottom: 20px; opacity: 0.9;">点击图标可直接跳转到对应应用</p>
+            
+            <div class="social-icons">
+                <!-- 快手 -->
+                <a href="kwai://profile/X1---------1X" class="social-item" target="_blank" onclick="openKwai(event)">
+                    <div class="social-icon">
+                        <img src="cxx5.png" alt="快手">
+                    </div>
+                    <div class="social-name">快手</div>
+                    <div class="social-id">X1---------1X</div>
+                </a>
+                
+                <!-- 纸飞机 -->
+                <a href="tg://resolve?domain=SaoZhu875" class="social-item" target="_blank" onclick="openTelegram(event)">
+                    <div class="social-icon">
+                        <img src="cxx9.png" alt="纸飞机">
+                    </div>
+                    <div class="social-name">纸飞机</div>
+                    <div class="social-id">@SaoZhu875</div>
+                </a>
+                
+                <!-- QQ -->
+                <a href="mqq://im/chat?chat_type=wpa&uin=3393243175&version=1&src_type=web" class="social-item" target="_blank" onclick="openQQ(event)">
+                    <div class="social-icon">
+                        <img src="cxx2.png" alt="QQ">
+                    </div>
+                    <div class="social-name">QQ</div>
+                    <div class="social-id">3393243175</div>
+                </a>
+            </div>
+        </section>
+        
+        <!-- 原神区域 -->
+        <section class="genshin-section glass-card">
+            <h2 class="genshin-title colorful-text">
+                <i class="fas fa-gamepad"></i> 原神 · 日常消遣
+            </h2>
+            <p style="margin-bottom: 25px; font-size: 1.1rem; opacity: 0.9;">点击图标可打开原神游戏或访问官网</p>
+            
+            <div class="genshin-icon" id="genshin-icon">
+                <img src="https://uploadstatic.mihoyo.com/contentweb/20200316/2020031614281079672.png" alt="原神">
+            </div>
+            
+            <p class="genshin-text">《原神》是我日常游戏的主打，喜欢在提瓦特大陆探索、解谜、战斗，享受开放世界带来的自由与惊喜😋😋😋</p>
+        </section>
+        
+        <!-- 页脚 -->
+        <footer class="footer">
+            <p>无人扶我凌云志，我自己也上不去🥵🥵</p>
+            <p style="margin-top: 10px;">🤤🤤🤤</p>
+        </footer>
     </div>
-    
-    <div class="cmd-card" style="background: #f0f5ff;">
-        <div class="boss-title" style="color: #2f54eb;">项目发展</div>
-        <div class="cmd-desc">
-            《原神：七神研究所》目前正处于初级测试阶段，为了方便使用，后续发展将作为网址或软件上线ദ്ദി˶˃ ᵕ ˂ )✧
-        </div>
-    </div>
-    
-    <!-- 坤服信息 -->
-    <div class="cmd-card" style="background: #f9f0ff;">
-        <div class="boss-title" style="color: #722ed1;">坤服QQ交流群</div>
-        <div class="cmd-desc">
-            1️⃣ 坤服-1区：1025681344<br>
-            2️⃣ 坤服-2区：1076827469<br>
-            3️⃣ 坤服-3区：1070927258
-        </div>
-    </div>
-    
-    <!-- 重要防骗提醒 -->
-    <div class="cmd-card" style="background: #fff2f0; border-left: 4px solid #ff4d4f;">
-        <div class="boss-title" style="color: #ff4d4f; font-size: 16px;">⚠️ 重要防骗提醒</div>
-        <div class="cmd-desc" style="color: #ff4d4f; font-weight: 500;">
-            如果你是花钱进的，请立刻退款加举报❗️
-        </div>
-        <div class="cmd-desc" style="color: #ff4d4f;">
-            切记！坤服为纯公益服不收取任何费用，市面上有各种倒卖勾以此盈利，正宗坤服群聊只有两个，倒卖勾通常会以<6.3指令服>为名让你付钱付费，价格1~100不等，如果被骗，请立即退款加举报❗️
-        </div>
-        <div class="cmd-desc" style="color: #ff4d4f;">
-            识别坤服也很简单，游戏内右下角的UID是以<kun+UID>的形式，除了两个坤服区，其他均为倒卖，坤服只有三个群，其他均为倒卖，发现不对，请立即退款加举报❗️
-        </div>
-        <div class="cmd-desc" style="color: #ff4d4f; font-weight: 600; margin-top: 10px;">
-            抵制倒卖勾，从你我做起！
-        </div>
-    </div>
-    
-    <!-- 原有头部信息内容 -->
-    <div class="cmd-card">
-        <div class="version">当前版本：6.3</div>
-        <div class="countdown"></div>
-        <div class="cmd-desc">
-            <span>热门角色时长：刻晴 : 1779 天</span>
-            <span style="margin: 0 10px;">|</span>
-            <a href="http://110.42.109.118:8080/" target="_blank">原神6.3指令请前往</a>
-        </div>
-    </div>
-    
-    <!-- 导航说明 -->
-    <div class="cmd-card" style="background: #fafbfc;">
-        <div class="boss-title">使用说明</div>
-        <div class="cmd-desc">
-            请使用上方导航栏切换到不同模块：<br>
-            • <strong>常用指令</strong>：获取角色、武器、材料等常用指令<br>
-            • <strong>角色</strong>：获取所有角色获取指令<br>
-            • <strong>武器</strong>：获取武器指令<br>
-            • <strong>值得铭记的强敌</strong>：Boss召唤指令<br>
-            • <strong>所有场景/秘境ID</strong>：传送至各种秘境<br>
-            • <strong>其他模块</strong>：更多游戏功能指令
-        </div>
-    </div>
-</section>
 
-    <!-- 常用指令模块 -->
-    <section id="commonCommandsSection" class="content-section">
-        <h2 class="section-title">常用指令</h2>
+    <script>
+        // 创建雪花效果
+        function createSnowflakes() {
+            const snowContainer = document.getElementById('snow-container');
+            const snowflakeCount = 80;
+            
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                snowflake.innerHTML = '雫雫牛逼';
+                
+                // 随机属性
+                const size = Math.random() * 20 + 10;
+                const left = Math.random() * 100;
+                const duration = Math.random() * 20 + 10;
+                const delay = Math.random() * 5;
+                const opacity = Math.random() * 0.7 + 0.3;
+                
+                snowflake.style.fontSize = `${size}px`;
+                snowflake.style.left = `${left}vw`;
+                snowflake.style.animationDuration = `${duration}s`;
+                snowflake.style.animationDelay = `${delay}s`;
+                snowflake.style.opacity = opacity;
+                
+                snowContainer.appendChild(snowflake);
+            }
+        }
 
-        <!-- 角色相关指令 -->
-        <div class="cmd-card">
-            <div class="cmd-code">/give avatars lv100 c6 sl15</div>
-            <div class="cmd-desc">（全角色100级6命15级天赋）</div>
-            <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-        </div>
+        // 关于作者按钮点击事件
+        document.getElementById('about-button').addEventListener('click', function() {
+            const socialSection = document.getElementById('social-section');
+            
+            if (socialSection.style.display === 'block') {
+                socialSection.style.display = 'none';
+                this.innerHTML = '<i class="fas fa-chevron-down"></i> 关于作者/联系方式';
+            } else {
+                socialSection.style.display = 'block';
+                this.innerHTML = '<i class="fas fa-chevron-up"></i> 收起联系方式';
+                
+                // 添加滚动效果
+                socialSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        });
 
-        <!-- 武器相关指令 -->
-        <div class="cmd-card">
-            <div class="cmd-code">/give weapons lv91 x2 r5</div>
-            <div class="cmd-desc">（全武器精5）</div>
-            <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-        </div>
+        // 社交应用打开处理
+        function openKwai(e) {
+            e.preventDefault();
+            // 尝试打开快手应用
+            window.location.href = 'kwai://profile/X1---------1X';
+            // 如果无法打开应用，则跳转到网页版
+            setTimeout(function() {
+                window.location.href = 'https://www.kuaishou.com/profile/3xXXXXX';
+            }, 500);
+        }
 
-        <!-- 冒险等级指令 -->
-        <div class="cmd-card">
-            <div class="cmd-code">/setprop player_level 60</div>
-            <div class="cmd-desc">（冒险等级60级，想要多少级就把后面的数字改成几）</div>
-            <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-        </div>
+        function openTelegram(e) {
+            e.preventDefault();
+            // 尝试打开Telegram应用
+            window.location.href = 'tg://resolve?domain=SaoZhu875';
+            // 如果无法打开应用，则跳转到网页版
+            setTimeout(function() {
+                window.location.href = 'https://t.me/SaoZhu875';
+            }, 500);
+        }
 
-        <!-- 世界等级指令 -->
-        <div class="cmd-card">
-            <div class="cmd-code">/prop worldlevel 9</div>
-            <div class="cmd-desc">（世界等级9，想要多少级就把后面的数字换成多少）</div>
-            <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-        </div>
+        function openQQ(e) {
+            e.preventDefault();
+            // 尝试打开QQ应用
+            window.location.href = 'mqq://im/chat?chat_type=wpa&uin=3393243175&version=1&src_type=web';
+            // 如果无法打开应用，则显示提示
+            setTimeout(function() {
+                alert('如果QQ没有自动打开，请手动添加好友：3393243175');
+            }, 500);
+        }
 
-        <!-- 常用材料标题 -->
-        <div class="section-title" style="font-size:16px; margin-top:20px;">常用材料</div>
+        // 原神图标点击事件
+        document.getElementById('genshin-icon').addEventListener('click', function() {
+            // 尝试打开原神应用
+            window.location.href = 'yuanshen://';
+            
+            // 如果无法打开应用，则跳转到官网
+            setTimeout(function() {
+                window.location.href = 'https://ys.mihoyo.com/';
+            }, 500);
+        });
 
-        <!-- 材料指令1 -->
-        <div class="cmd-card">
-            <div class="cmd-code">/give mats x9999</div>
-            <div class="cmd-desc">（含材料，皮肤等道具）</div>
-            <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-        </div>
+        // 背景音乐自动播放处理
+        document.addEventListener('DOMContentLoaded', function() {
+            // 尝试播放背景音乐
+            const audio = document.getElementById('background-music');
+            audio.play().catch(function(error) {
+                console.log('音频自动播放被阻止，需要用户交互:', error);
+                // 添加一个页面点击事件来启动音频
+                document.body.addEventListener('click', function initAudio() {
+                    audio.play();
+                    document.body.removeEventListener('click', initAudio);
+                });
+            });
+            
+            // 创建雪花效果
+            createSnowflakes();
+        });
 
-        <!-- 经验书指令 -->
-        <div class="cmd-card">
-            <div class="cmd-code">/give 104003 lv200 x1000000</div>
-            <div class="cmd-desc">（经验书）</div>
-            <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-        </div>
-
-        <!-- 原石指令 -->
-        <div class="cmd-card">
-            <div class="cmd-code">/give 201×100000</div>
-            <div class="cmd-desc">（十万原石）</div>
-            <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-        </div>
-
-        <!-- 摩拉指令 -->
-        <div class="cmd-card">
-            <div class="cmd-code">/give 202 x100000000</div>
-            <div class="cmd-desc">（一亿摩拉）</div>
-            <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-        </div>
-
-        <!-- 纠缠之缘指令 -->
-        <div class="cmd-card">
-            <div class="cmd-code">/give 223 x10000</div>
-            <div class="cmd-desc">（一万纠缠之缘）</div>
-            <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-        </div>
-
-        <!-- 相遇之缘指令 -->
-        <div class="cmd-card">
-            <div class="cmd-code">/give 224x10000</div>
-            <div class="cmd-desc">（一万相遇之缘）</div>
-            <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-        </div>
-
-        <!-- 珍珠纪行指令 -->
-        <div class="cmd-card">
-            <div class="cmd-code">/give 1201 x1</div>
-            <div class="cmd-desc">（获取珍珠纪行）</div>
-            <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-        </div>
-
-        <!-- 月卡指令 -->
-        <div class="cmd-card">
-            <div class="cmd-code">/give 1202×999</div>
-            <div class="cmd-desc">（获取月卡）</div>
-            <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-        </div>
-
-        <!-- 常用功能标题 -->
-        <div class="section-title" style="font-size:16px; margin-top:20px;">常用功能</div>
-
-        <!-- 恢复血量指令 -->
-        <div class="cmd-card">
-            <div class="cmd-code">/heal</div>
-            <div class="cmd-desc">（恢复全队血量）</div>
-            <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-        </div>
-
-        <!-- 恢复元素能量指令 -->
-        <div class="cmd-card">
-            <div class="cmd-code">/e get</div>
-            <div class="cmd-desc">（恢复元素能量）</div>
-            <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-        </div>
-
-        <!-- 全部成就指令 -->
-        <div class="cmd-card">
-            <div class="cmd-code">/achievement grantall</div>
-            <div class="cmd-desc">（达成全部成就）</div>
-            <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-        </div>
-
-        <!-- 全角色满命指令 -->
-        <div class="cmd-card">
-            <div class="cmd-code">/setConst 6 all</div>
-            <div class="cmd-desc">（全角色满命）</div>
-            <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-        </div>
-
-        <!-- 无限能量指令 -->
-        <div class="cmd-card">
-            <div class="cmd-code">/setprop unlimitedenergy 1</div>
-            <div class="cmd-desc">（无限能量）</div>
-            <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-        </div>
-
-        <!-- 无敌指令 -->
-        <div class="cmd-card">
-            <div class="cmd-code">/setprop godmode 1</div>
-            <div class="cmd-desc">（无敌）</div>
-            <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-        </div>
-
-        <!-- 无CD指令 -->
-        <div class="cmd-card">
-            <div class="cmd-code">/setstats cdr 100%</div>
-            <div class="cmd-desc">（无cd）</div>
-            <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-        </div>
-
-        <!-- 无限体力指令 -->
-        <div class="cmd-card">
-            <div class="cmd-code">/prop unlimitedstamina on</div>
-            <div class="cmd-desc">（无限体力）</div>
-            <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-        </div>
-
-        <!-- 解锁全部功能指令 -->
-        <div class="cmd-card">
-            <div class="cmd-code">/prop setopenstate all</div>
-            <div class="cmd-desc">解锁所有功能访问并包括完成所有教程(需要重新登录)</div>
-            <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-        </div>
-
-        <!-- 完成任务指令 -->
-        <div class="cmd-card">
-            <div class="cmd-code">/quest finish +任务ID</div>
-            <div class="cmd-desc">（完成/跳过任务）</div>
-            <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-        </div>
-
-        <!-- 谨慎使用标题 -->
-        <div class="section-title" style="font-size:16px; color:#ff4d4f; margin-top:20px;">谨慎使用！！！</div>
-
-        <!-- 清空当前角色命座指令 -->
-        <div class="cmd-card">
-            <div class="cmd-code">/resetconst</div>
-            <div class="cmd-desc">（清空当前角色的命座 需重登）</div>
-            <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-        </div>
-
-        <!-- 清空全部角色命座指令 -->
-        <div class="cmd-card">
-            <div class="cmd-code">/resetconst all</div>
-            <div class="cmd-desc">（清空全部角色的命座 需重登）</div>
-            <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-        </div>
-
-        <!-- 重置任务进度指令 -->
-        <div class="cmd-card">
-            <div class="cmd-code">/quest clear all</div>
-            <div class="cmd-desc">（完全重置你的任务进度，如果你不确定后果，请无视）</div>
-            <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-        </div>
-
-        <!-- 重置全部内容指令 -->
-        <div class="cmd-card">
-            <div class="cmd-code">/clear all</div>
-            <div class="cmd-desc">（这将重置该帐号上的所有内容，但UID不会更改）</div>
-            <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-        </div>
-
-        <!-- 清空背包指令 -->
-        <div class="cmd-card">
-            <div class="cmd-code">/item clear</div>
-            <div class="cmd-desc">（清空你的背包）</div>
-            <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-        </div>
-    </section>
-
-    <!-- 角色模块 -->
-    <section id="charSection" class="content-section">
-    <h2 class="section-title">角色数据库</h2>
-    
-    <div class="cmd-card">
-        <div class="cmd-code">/give 10000002 lv90 c6 sl15</div>
-        <div class="cmd-desc">（神里绫华）</div>
-        <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-    </div>
-    
-    <div class="cmd-card">
-        <div class="cmd-code">/give 10000003 lv90 c6 sl15</div>
-        <div class="cmd-desc">（琴）</div>
-        <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-    </div>
-    
-    <div class="cmd-card">
-        <div class="cmd-code">/give 10000006 lv90 c6 sl15</div>
-        <div class="cmd-desc">（丽莎）</div>
-        <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-    </div>
-    
-    <div class="cmd-card">
-        <div class="cmd-code">/give 10000014 lv90 c6 sl15</div>
-        <div class="cmd-desc">（芭芭拉）</div>
-        <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-    </div>
-    
-    <div class="cmd-card">
-        <div class="cmd-code">/give 10000015 lv90 c6 sl15</div>
-        <div class="cmd-desc">（凯亚）</div>
-        <button class="card-copy-btn" onclick="copyCmd(this)">一键复制</button>
-    </div>
-    
-    <div class="cmd-card">
-        <di
+        // 鼠标移动时的视差效果
+        document.addEventListener('mousemove', function(e) {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            // 背景图片轻微移动
+            const bg = document.querySelector('.background-image');
+            bg.style.transform = `translate(${x * 10}px, ${y * 10}px)`;
+            
+            // 毛玻璃卡片轻微移动
+            const cards = document.querySelectorAll('.glass-card');
+            cards.forEach(card => {
+                const speed = card.classList.contains('header') ? 0.5 : 0.3;
+                card.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
