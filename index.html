@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>加载动画 + 玻璃弹窗</title>
+<title>社交分享平台</title>
 <style>
 /* 全局重置 */
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -12,11 +12,11 @@
 body {
     background: linear-gradient(135deg, #3a7bd5, #00d2ff, #7b4397, #dc2430);
     background-size: 400% 400%;
-    animation: bgGradient 12s ease infinite;
+    animation: bgGradient 8s ease infinite;
     height: 100vh;
     overflow: hidden;
     font-family: Arial, sans-serif;
-    transition: opacity 0.8s ease; /* 统一过渡动画 */
+    transition: opacity 0.8s ease;
 }
 
 /* 背景渐变动画 */
@@ -56,16 +56,23 @@ body {
 .loader .dot:nth-child(2) { animation-delay: 0.2s; }
 .loader .dot:nth-child(3) { animation-delay: 0.4s; }
 
-/* 主页面内容容器（开始按钮） */
-.main-content {
+/* 通用容器 */
+.container {
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 99;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+}
+
+/* 显示容器 */
+.container.show {
     opacity: 1;
-    transition: opacity 1.2s ease, transform 1.2s ease;
+    display: flex;
 }
 
 /* 玻璃弹窗通用样式 */
@@ -77,11 +84,13 @@ body {
     border-radius: 22px;
     padding: 35px 55px;
     text-align: center;
+    width: 90%;
+    max-width: 400px;
 }
 
 /* 渐变文字 */
 .gradient-text {
-    font-size: 32px;
+    font-size: 24px;
     font-weight: bold;
     background: linear-gradient(90deg, #ff9966, #ff5e62, #833ab4, #fd1d1d, #fcb045);
     background-size: 300% 300%;
@@ -116,27 +125,365 @@ body.fade-out {
     opacity: 0;
 }
 
-/* Home界面样式 - 默认隐藏 */
-.home-content {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    display: none; /* 初始隐藏 */
-    justify-content: center;
-    align-items: center;
-    z-index: 99;
-    opacity: 0;
-    transition: opacity 1.2s ease;
+/* 表单样式 */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
 }
 
-/* 显示Home界面 */
-.home-content.show {
+.form-group label {
+    display: block;
+    color: white;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+.form-group input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* 按钮样式 */
+.btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #ff9966, #ff5e62);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    margin-top: 10px;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+/* 切换文本 */
+.switch-text {
+    color: white;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.switch-text span {
+    color: #ff9966;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/* 顶部横幅 */
+.banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    overflow: hidden;
+    z-index: 100;
+    pointer-events: none;
+}
+
+.banner-text {
+    position: absolute;
+    white-space: nowrap;
+    font-size: 14px;
+    color: white;
+    animation: bannerMove 10s linear infinite;
+    animation-delay: calc(var(--delay) * 1s);
+}
+
+@keyframes bannerMove {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+/* 导航栏 */
+.navbar {
+    position: fixed;
+    top: 40px;
+    left: 0;
+    width: 100%;
     display: flex;
-    opacity: 1;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 98;
+}
+
+.nav-logo {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-item {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.nav-item:hover {
+    opacity: 0.8;
+}
+
+/* 主页内容 */
+.home-content {
+    padding-top: 100px;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    display: none;
+}
+
+/* 个人资料 */
+.profile-section {
+    text-align: center;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    margin: 0 auto 15px;
+    object-fit: cover;
+}
+
+.username-display {
+    font-size: 22px;
+    color: white;
+    margin-bottom: 10px;
+}
+
+/* 内容发布区 */
+.post-section {
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.post-input {
+    width: 100%;
+    height: 100px;
+    padding: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 16px;
+    outline: none;
+    resize: none;
+    margin-bottom: 15px;
+}
+
+.post-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* 发布按钮组 */
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.upload-btn {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.upload-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* 内容列表 */
+.posts-list {
+    padding: 0 20px 30px;
+}
+
+.post-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.post-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+}
+
+.post-username {
+    color: white;
+    font-weight: bold;
+}
+
+.post-content {
+    color: white;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.post-media {
+    width: 100%;
+    max-height: 300px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    object-fit: cover;
+}
+
+.post-actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: white;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.action-btn:hover {
+    opacity: 0.8;
+}
+
+/* 好友列表 */
+.friends-list {
+    padding: 20px;
+    display: none;
+}
+
+.friend-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.friend-item:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.friend-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+    object-fit: cover;
+}
+
+.friend-name {
+    color: white;
+    font-size: 16px;
+}
+
+/* 搜索框 */
+.search-box {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 16px;
+    outline: none;
+    margin-bottom: 20px;
+}
+
+.search-box::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* 响应式调整 */
+@media (max-width: 480px) {
+    .glass-card {
+        padding: 25px 20px;
+    }
+    
+    .navbar {
+        padding: 10px 15px;
+    }
+    
+    .nav-menu {
+        gap: 10px;
+    }
 }
 </style>
 </head>
 <body>
+
+<!-- 背景音乐 -->
+<audio id="bgMusic" loop preload="auto">
+    <source src="cxx.mp3" type="audio/mpeg">
+
+
+<!-- 顶部彩色横幅 -->
+<div class="banner" id="bannerContainer"></div>
+
+<!-- 导航栏 -->
+<div class="navbar" id="navbar" style="display: none;">
+    <div class="nav-logo">社交平台</div>
+    <div class="nav-menu">
+        <div class="nav-item" onclick="showHome()">首页</div>
+        <div class="nav-item" onclick="showFriends()">好友</div>
+        <div class="nav-item" onclick="logout()">退出</div>
+    </div>
+</div>
 
 <!-- 加载动画 -->
 <div class="loader">
@@ -145,53 +492,34 @@ body.fade-out {
     <div class="dot"></div>
 </div>
 
-<!-- 主页面：开始按钮 -->
-<div class="main-content" id="startContent">
+<!-- 登录容器 -->
+<div class="container show" id="loginContainer">
     <div class="glass-card">
-        <div class="gradient-text" onclick="enterMain()">开始！</div>
+        <h1 class="gradient-text" style="margin-bottom: 25px; font-size: 28px;">登录</h1>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="loginUsername">用户名</label>
+                <input type="text" id="loginUsername" placeholder="请输入用户名" required>
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">密码</label>
+                <input type="password" id="loginPassword" placeholder="请输入密码（至少6位）" required>
+            </div>
+            <button type="submit" class="btn">登录</button>
+        </form>
+        <div class="switch-text">
+            没有账号？<span onclick="switchToRegister()">立即注册</span>
+        </div>
     </div>
 </div>
 
-<!-- Home界面 - 初始隐藏 -->
-<div class="home-content" id="homeContent">
+<!-- 注册容器 -->
+<div class="container" id="registerContainer">
     <div class="glass-card">
-        <h1 style="color: white; margin-bottom: 20px;">欢迎进入Home界面</h1>
-        <p style="color: white; margin-bottom: 30px;">这是通过点击“开始”按钮才会显示的内容</p>
-        <div class="gradient-text" onclick="goBack()">返回</div>
-    </div>
-</div>
-
-<script>
-// 1. 模拟加载完成（保留原加载动画效果）
-setTimeout(() => {
-    document.body.classList.add('started');
-}, 2200);
-
-// 2. 点击开始 → 切换到Home界面（不跳转页面）
-function enterMain() {
-    // 执行淡出动画
-    document.body.classList.add('fade-out');
-    
-    // 等待动画完成后切换内容
-    setTimeout(() => {
-        // 隐藏开始界面，显示Home界面
-        document.getElementById('startContent').style.display = 'none';
-        document.getElementById('homeContent').classList.add('show');
-        // 重置body透明度
-        document.body.classList.remove('fade-out');
-    }, 800); // 时间匹配CSS动画时长
-}
-
-// 3. 返回开始界面（可选）
-function goBack() {
-    document.body.classList.add('fade-out');
-    setTimeout(() => {
-        document.getElementById('homeContent').classList.remove('show');
-        document.getElementById('startContent').style.display = 'flex';
-        document.body.classList.remove('fade-out');
-    }, 800);
-}
-</script>
-
-</body>
-</html>
+        <h1 class="gradient-text" style="margin-bottom: 25px; font-size: 28px;">注册</h1>
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="registerUsername">用户名</label>
+                <input type="text" id="registerUsername" placeholder="请输入用户名（唯一）" required>
+            </div>
+           
