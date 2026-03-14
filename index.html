@@ -52,7 +52,6 @@ body {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-30px); }
 }
-
 .loader .dot:nth-child(2) { animation-delay: 0.2s; }
 .loader .dot:nth-child(3) { animation-delay: 0.4s; }
 
@@ -94,23 +93,16 @@ body {
     cursor: pointer;
 }
 
+/* 点击文字稍微缩放效果 */
+.gradient-text:active {
+    transform: scale(0.95);
+}
+
 /* 渐变文字动画 */
 @keyframes textGradient {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
-}
-
-/* 弹窗进入动画 */
-@keyframes popIn {
-    from {
-        opacity: 0;
-        transform: translateY(40px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 /* 点击开始后 */
@@ -123,6 +115,12 @@ body {
 .started .loader {
     opacity: 0;
     pointer-events: none;
+}
+
+/* 丝滑跳转动画：body 淡出 */
+body.fade-out {
+    opacity: 0;
+    transition: opacity 0.8s ease;
 }
 </style>
 </head>
@@ -148,11 +146,15 @@ setTimeout(() => {
     document.body.classList.add('started');
 }, 2200);
 
-// 点击开始进入主页面（后面我再给你主页面代码）
+// 点击开始 → 丝滑跳转 home.html
 function enterMain() {
-    alert("进入主页面！下一步我给你生成完整网站结构。");
-    // 你可以在这里跳转到你的真正主页
-    // window.location.href = "home.html";
+    // 1. 先执行淡出动画
+    document.body.classList.add('fade-out');
+
+    // 2. 等待动画完成后跳转
+    setTimeout(() => {
+        window.location.href = "home.html";
+    }, 800); // 时间匹配 CSS 动画时长
 }
 </script>
 
