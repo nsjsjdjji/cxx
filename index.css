@@ -1,0 +1,66 @@
+/* 这是第一行：HTML 骨架，必须放在最顶部 */
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的 CSS 网页</title>
+    <!-- 这里开始写真正的 CSS 样式 -->
+    <style>
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 给网页设置背景色 */
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* 这是一个卡片样式 */
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .title {
+            color: #1a73e8;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .desc {
+            color: #5f6368;
+            font-size: 16px;
+        }
+
+        /* 一个简单的动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            animation: fadeIn 0.8s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- HTML 身体部分：放页面内容 -->
+    <div class="card">
+        <h1 class="title">成功创建 CSS 网页！</h1>
+        <p class="desc">这是一个后缀名为 .css 的网页文件</p>
+        <p style="margin-top:20px; color:#8ab4f8">你可以直接双击运行它！</p>
+    </div>
+</body>
+</html>
