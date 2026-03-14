@@ -64,6 +64,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
+    z-index: 1;
 }
 
 .page-content {
@@ -185,6 +187,24 @@ input::placeholder { color: rgba(255,255,255,0.6); }
     cursor: pointer;
 }
 
+/* 头像 */
+.avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #fff, #eee);
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    color: #333;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    border: 3px solid rgba(255,255,255,0.3);
+}
+.avatar:hover { transform: scale(1.05); }
+
 /* 手机自适应 */
 @media (max-width: 768px) {
     .navbar { gap: 25px; }
@@ -192,14 +212,29 @@ input::placeholder { color: rgba(255,255,255,0.6); }
     .page-title { font-size: 22px; }
     .card { max-width: 90%; }
 }
+
+/* 下雪动画 */
+.snow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
 </style>
 </head>
 <body>
+
+<!-- 下雪动画 -->
+<canvas id="snow" class="snow"></canvas>
 
 <!-- 导航 -->
 <div class="navbar">
     <div class="nav-item active" onclick="switchPage('home')">主页</div>
     <div class="nav-item" onclick="switchPage('hot')">热门</div>
+    <div class="nav-item" id="nav-feature" onclick="switchPage('feature')" style="display:none;">功能</div>
     <div class="nav-item" onclick="switchPage('about')">关于作者</div>
 </div>
 
@@ -209,16 +244,23 @@ input::placeholder { color: rgba(255,255,255,0.6); }
     <!-- 主页 -->
     <div id="page-home" class="page-content active">
         <div class="page-title">欢迎进入主页</div>
+        
+        <div class="glass-box" style="margin-bottom:30px;">
+            <div id="avatar" class="avatar" onclick="changeAvatar()">👤</div>
+            <h3 id="welcome-text">欢迎来到我的网站</h3>
+            <p>请登录后体验更多功能</p>
+        </div>
 
         <div class="cards">
+            <div class="card" id="feature-card" style="display:none;">
+                <h3>功能入口</h3>
+                <p>点击进入功能页面</p>
+                <button class="btn" style="margin-top:10px;" onclick="goToFeature()">进入</button>
+            </div>
             <div class="card">
                 <h3>关于我</h3>
                 <p>这里是你的个人介绍区域。</p>
                 <p>你可以在这里写：你的名字、爱好、简介等。</p>
-            </div>
-            <div class="card">
-                <h3>功能入口</h3>
-                <p>热门内容、关于作者都可以在这里访问。</p>
             </div>
             <div class="card">
                 <h3>欢迎使用</h3>
@@ -231,8 +273,33 @@ input::placeholder { color: rgba(255,255,255,0.6); }
     <div id="page-hot" class="page-content">
         <div class="page-title">热门内容</div>
         <div class="cards">
-            <div class="card"><h3>热门 1</h3><p>热门内容展示区。</p></div>
-            <div class="card"><h3>热门 2</h3><p>后续可替换为你想要的内容。</p></div>
+            <div class="card" onclick="showMaking()">
+                <h3>热门 1</h3>
+                <p>点击查看热门内容</p>
+            </div>
+            <div class="card" onclick="goToMusic()">
+                <h3>热门 2</h3>
+                <p>免费音乐播放平台</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 功能 -->
+    <div id="page-feature" class="page-content">
+        <div class="page-title">功能页面</div>
+        <div class="cards">
+            <div class="card">
+                <h3>功能 1</h3>
+                <p>功能描述</p>
+            </div>
+            <div class="card">
+                <h3>功能 2</h3>
+                <p>功能描述</p>
+            </div>
+            <div class="card">
+                <h3>功能 3</h3>
+                <p>功能描述</p>
+            </div>
         </div>
     </div>
 
@@ -241,8 +308,8 @@ input::placeholder { color: rgba(255,255,255,0.6); }
         <div class="page-title">关于作者</div>
         <div class="glass-box">
             <h3>作者信息</h3>
-            <p style="margin-top:10px;">账号登录系统已集成</p>
-            <p>你可以注册账号后登录使用</p>
+            <p style="margin-top:10px;">QQ群：1065279470</p>
+            <p>有感兴趣的进群了解</p>
             <p>所有数据保存在本地，不泄露</p>
         </div>
     </div>
@@ -290,9 +357,14 @@ function switchPage(page) {
 
     if(page==='home') document.getElementById('page-home').classList.add('active');
     else if(page==='hot') document.getElementById('page-hot').classList.add('active');
+    else if(page==='feature') document.getElementById('page-feature').classList.add('active');
     else if(page==='about') document.getElementById('page-about').classList.add('active');
 
-    document.querySelectorAll('.nav-item')[page==='home'?0:page==='hot'?1:2].classList.add('active');
+    document.querySelectorAll('.nav-item')[
+        page==='home'?0:
+        page==='hot'?1:
+        page==='feature'?2:3
+    ].classList.add('active');
 }
 
 // ========= 登录/注册 =========
@@ -332,40 +404,3 @@ function login() {
     let local = JSON.parse(localStorage.getItem("users")) || [];
     let find = local.find(u=>u.user===user && u.pwd===pwd);
     if(!find){ alert("账号或密码错误！"); return; }
-
-    alert("登录成功！");
-    localStorage.setItem("loginUser", user);
-    location.reload();
-}
-
-// 注册
-function register() {
-    let user = document.getElementById('reg-user').value.trim();
-    let pwd = document.getElementById('reg-pwd').value.trim();
-    let pwd2 = document.getElementById('reg-pwd2').value.trim();
-    let cap = document.getElementById('reg-captcha-input').value.trim();
-
-    if(!user || !pwd){ alert("请填写账号密码！"); return; }
-    if(pwd !== pwd2){ alert("两次密码不一致！"); return; }
-    if(cap != regCaptchaVal){ alert("验证码错误！"); return; }
-
-    let local = JSON.parse(localStorage.getItem("users")) || [];
-    if(local.some(u=>u.user===user)){ alert("账号已存在！"); return; }
-
-    local.push({user:user, pwd:pwd});
-    localStorage.setItem("users", JSON.stringify(local));
-    alert("注册成功！请登录。");
-    hideRegister();
-}
-
-// 自动加载：显示登录框
-window.onload = function(){
-    if(!localStorage.getItem("loginUser")){
-        document.getElementById('login-modal').style.display = 'block';
-        refreshCaptcha();
-    }
-}
-</script>
-
-</body>
-</html>
