@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>兰怡闳 天天开心</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            overflow: hidden;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: #0a0a0a;
+        }
+        
+        /* 启动页面样式 */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        
+        #splash-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        
+        #start-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            cursor: pointer;
+            animation: spin 8s linear infinite;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.5), 0 0 60px rgba(255, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1002;
+        }
+        
+        #start-image:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.7), 0 0 80px rgba(255, 0, 0, 0.5);
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 水波纹效果 */
+        #ripple {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 1001;
+        }
+        
+        .ripple-expand {
+            animation: ripple-expand 1.2s ease-out forwards;
+        }
+        
+        @keyframes ripple-expand {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 1;
+            }
+            100% {
+                width: 300vw;
+                height: 300vw;
+                opacity: 0;
+            }
+        }
+        
+        /* 启动页面红色恐怖文字 */
+        #splash-text-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .splash-text {
+            position: absolute;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ff0000;
+            opacity: 0.7;
+            white-space: nowrap;
+            animation: splash-fall linear forwards;
+            text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000;
+        }
+        
+        @keyframes splash-fall {
+            0% {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+        
+        /* 通知弹窗样式 */
+        #notification {
+            position: fixed;
+            top: 20px;
+            left: -400px;
+            max-width: 350px;
+            width: calc(100% - 40px);
+            padding: 16px 20px;
+            border-radius: 16px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            transition: left 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        
+        #notification.show {
+            left: 20px;
+        }
+        
+        #notification.shake {
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        #notification.shatter {
+            animation: shatter 0.6s ease-out forwards;
+        }
+        
+        #notification-text {
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        #progress-bar {
+            height: 3px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        #progress-bar-fill {
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(90deg, #ff6b6b, #ffd700);
+            border-radius: 2px;
+            transition: width 3s linear;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        @keyframes shatter {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+        }
+        
+        /* 原有样式 */
+        #background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('cxx.png');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.4) saturate(0.8);
+            z-index: -2;
+        }
+        
+        #rain-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .raindrop {
+            position: absolute;
+            width: 1px;
+            height: 20px;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.6));
+            animation: rain-fall linear infinite;
+        }
+        
+        @keyframes rain-fall {
+            0% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+        
+        .falling-text {
+            position: fixed;
+            font-size: 2rem;
+            font-weight: bold;
+            white-space: nowrap;
+            pointer-events: none;
+            animation: fall-rotate linear forwards;
+            text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+            z-index: 1;
+        }
+        
+        @keyframes fall-rotate {
+            0% {
+                transform: translateY(-50px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        .rising-text {
+            position: fixed;
+            font-size: 1.5rem;
+            font-weight: 600;
+            white-space: nowrap;
+            pointer-events: none;
+            animation: rise linear forwards;
+            color: #ffd700;
+            text-shadow: 0 0 8px #ffd700, 0 0 15px #ffd700;
+            z-index: 1;
+        }
+        
+        @keyframes rise {
+            0% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+        }
+        
+        .text-button {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            position: relative;
+        }
+        
+        .text-button:hover {
+            color: rgba(255, 255, 255, 1);
+            transform: scale(1.1);
+        }
+        
+        .text-button:active {
+            transform: scale(1.2);
+            color: #ffd700;
+        }
+        
+        .text-button::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 1px;
+            background: #ffd700;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .text-button:hover::after {
+            width: 80%;
+        }
+        
+        #message-display {
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        
+        .title-text {
+            animation: title-pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes title-pulse {
+            0%, 100% {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073;
+            }
+            50% {
+                text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6;
+            }
+        }
+        
+        /* 主内容初始隐藏 */
+        #main-content {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.8s ease 0.3s, visibility 0.8s ease 0.3s;
+        }
+        
+        #main-content.show {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body>
+    <!-- 启动页面 -->
+    <div id="splash-screen">
+        <div id="splash-text-container"></div>
+        <img id="start-image" src="cxx1.png" alt="点击进入">
+        <div id="ripple"></div>
+    </div>
+    
+    <!-- 通知弹窗 -->
+    <div id="notification">
+        <p id="notification-text"></p>
+        <div id="progress-bar">
+            <div id="progress-bar-fill"></div>
+        </div>
+    </div>
+    
+    <!-- 背景图片 -->
+    <div id="background"></div>
+    
+    <!-- 下雨特效容器 -->
+    <div id="rain-container"></div>
+    
+    <!-- 文字刷屏容器 -->
+    <div id="text-container"></div>
+    
+    <!-- 主内容 -->
+    <div id="main-content" class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4">
+        <!-- 标题 -->
+        <h1 class="title-text text-4xl md:text-6xl font-bold text-white mb-12 text-center">
+            兰怡闳 天天开心
+        </h1>
+        
+        <!-- 消息显示框 -->
+        <div id="message-display" class="rounded-2xl p-6 mb-10 max-w-md w-full text-center min-h-[80px] flex items-center justify-center">
+            <p id="message-text" class="text-white text-lg">点击下方文字，收获专属祝福</p>
+        </div>
+        
+        <!-- 文字按钮 -->
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-lg w-full text-center">
+            <button class="text-button" data-message="愿你眼里的星星永远闪烁，心里的阳光永远明媚">
+                温柔祝福
+            </button>
+            <button class="text-button" data-message="希望你每天都能被温柔以待，所有的美好都如约而至">
+                美好祝愿
+            </button>
+            <button class="text-button" data-message="你的笑容是我见过最美的风景，要一直开心下去哦">
+                笑容常在
+            </button>
+            <button class="text-button" data-message="愿你平安喜乐，万事胜意，岁岁年年都有我陪伴">
+                岁岁平安
+            </button>
+            <button class="text-button" data-message="不管遇到什么困难，记得我永远在你身后支持你">
+                永远支持
+            </button>
+            <button class="text-button" data-message="你是独一无二的宝藏，值得世间所有的美好">
+                独一无二
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 恐怖文字内容库
+        const horrorTexts = [
+            "别回头", "有人在看你", "身后有东西", "它来了", "快跑",
+            "不要相信任何人", "门开了", "镜子里的不是你", "血", "救命",
+            "你逃不掉的", "它在你身后", "听到脚步声了吗", "别出声", "看着我"
+        ];
+        
+        // 创建启动页面红色恐怖文字
+        function createSplashText() {
+            const container = document.getElementById('splash-text-container');
+            const text = document.createElement('div');
+            text.classList.add('splash-text');
+            text.textContent = horrorTexts[Math.floor(Math.random() * horrorTexts.length)];
+            text.style.left = `${Math.random() * 90}%`;
+            text.style.animationDuration = `${4 + Math.random() * 4}s`;
+            text.style.fontSize = `${0.8 + Math.random() * 1}rem`;
+            text.style.opacity = `${0.5 + Math.random() * 0.3}`;
+            container.appendChild(text);
+            
+            setTimeout(() => {
+                text.remove();
+            }, 8000);
+        }
+        
+        // 显示通知函数
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notification-text');
+            const progressBarFill = document.getElementById('progress-bar-fill');
+            
+            // 设置消息内容
+            notificationText.textContent = message;
+            
+            // 重置动画
+            notification.classList.remove('show', 'shake', 'shatter');
+            progressBarFill.style.width = '100%';
+            
+            // 触发重排
+            void notification.offsetWidth;
+            
+            // 显示通知
+            notification.classList.add('show');
+            
+            // 开始进度条动画
+            setTimeout(() => {
+                progressBarFill.style.width = '0%';
+            }, 10);
+            
+            // 3秒后震动并消失
+            setTimeout(() => {
+                notification.classList.add('shake');
+                
+                setTimeout(() => {
+                    notification.classList.add('shatter');
+                    
+                    setTimeout(() => {
+                        notification.classList.remove('show', 'shake', 'shatter');
+                    }, 600);
+                }, 500);
+            }, 3000);
+        }
+        
+        // 创建下雨特效
+        function createRain() {
+            const rainContainer = document.getElementById('rain-container');
+            const rainCount = 100;
+            
+            for (let i = 0; i < rainCount; i++) {
+                const raindrop = document.createElement('div');
+                raindrop.classList.add('raindrop');
+                raindrop.style.left = `${Math.random() * 100}%`;
+                raindrop.style.animationDuration = `${0.5 + Math.random() * 1}s`;
+                raindrop.style.animationDelay = `${Math.random() * 2}s`;
+                raindrop.style.height = `${10 + Math.random() * 20}px`;
+                rainContainer.appendChild(raindrop);
+            }
+        }
+        
+        // 颜色数组
+        const colors = [
+            '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7',
+            '#dfe6e9', '#fd79a8', '#a29bfe', '#fdcb6e', '#e17055',
+            '#00b894', '#00cec9', '#6c5ce7', '#ff7675', '#74b9ff'
+        ];
+        
+        // 创建下落旋转的"兰怡闳"文字
+        function createFallingText() {
+            const textContainer = document.getElementById('text-container');
+            const text = document.createElement('div');
+            text.classList.add('falling-text');
+            text.textContent = '兰怡闳';
+            text.style.left = `${Math.random() * 90}%`;
+            text.style.color = colors[Math.floor(Math.random() * colors.length)];
+            text.style.animationDuration = `${5 + Math.random() * 5}s`;
+            text.style.fontSize = `${1.5 + Math.random() * 2}rem`;
+            textContainer.appendChild(text);
+            
+            // 动画结束后移除元素
+            setTimeout(() => {
+                text.remove();
+            }, 10000);
+        }
+        
+        // 创建上升的"天天开心"文字
+        function createRisingText() {
+            const textContainer = document.getElementById('text-container');
+            const text = document.createElement('div');
+            text.classList.add('rising-text');
+            text.textContent = '天天开心';
+            text.style.left = `${Math.random() * 90}%`;
+            text.style.animationDuration = `${6 + Math.random() * 4}s`;
+            text.style.fontSize = `${1 + Math.random() * 1.5}rem`;
+            textContainer.appendChild(text);
+            
+            // 动画结束后移除元素
+            setTimeout(() => {
+                text.remove();
+            }, 10000);
+        }
+        
+        // 启动页面逻辑
+        const splashScreen = document.getElementById('splash-screen');
+        const startImage = document.getElementById('start-image');
+        const ripple = document.getElementById('ripple');
+        const mainContent = document.getElementById('main-content');
+        
+        // 定时生成启动页面恐怖文字
+        const splashTextInterval = setInterval(createSplashText, 200);
+        
+        // 初始生成一些恐怖文字
+        for (let i = 0; i < 30; i++) {
+            setTimeout(() => {
+                createSplashText();
+            }, i * 50);
+        }
+        
+        // 点击启动图片
+        startImage.addEventListener('click', (e) => {
+            // 停止生成恐怖文字
+            clearInterval(splashTextInterval);
+            
+            // 触发水波纹效果
+            const rect = startImage.getBoundingClientRect();
+            ripple.style.left = `${rect.left + rect.width / 2}px`;
+            ripple.style.top = `${rect.top + rect.height / 2}px`;
+            ripple.classList.add('ripple-expand');
+            
+            // 停止图片旋转
+            startImage.style.animationPlayState = 'paused';
+            
+            // 过渡到主页面
+            setTimeout(() => {
+                splashScreen.classList.add('hidden');
+                mainContent.classList.add('show');
+                
+                // 初始化主页面效果
+                createRain();
+                
+                // 定时生成文字
+                setInterval(createFallingText, 300);
+                setInterval(createRisingText, 500);
+                
+                // 页面加载时生成一些初始文字
+                for (let i = 0; i < 20; i++) {
+                    setTimeout(() => {
+                        createFallingText();
+                        createRisingText();
+                    }, i * 100);
+                }
+                
+                // 显示欢迎通知
+                setTimeout(() => {
+                    showNotification('欢迎你会看我的网页');
+                }, 800);
+            }, 400);
+        });
+        
+        // 按钮点击事件
+        const buttons = document.querySelectorAll('.text-button');
+        const messageText = document.getElementById('message-text');
+        const messageDisplay = document.getElementById('message-display');
+        
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                const message = button.getAttribute('data-message');
+                
+                // 添加消息框放大效果
+                messageDisplay.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    messageDisplay.style.transform = 'scale(1)';
+                }, 200);
+                
+                // 显示消息
+                messageText.style.opacity = '0';
+                setTimeout(() => {
+                    messageText.textContent = message;
+                    messageText.style.opacity = '1';
+                }, 200);
+                
+                // 点击时额外生成一些文字
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(() => {
+                        createFallingText();
+                        createRisingText();
+                    }, i * 100);
+                }
+                
+                // 显示按钮点击通知
+                showNotification(`已发送祝福：${message.substring(0, 10)}...`);
+            });
+        });
+    </script>
+</body>
+</html>
